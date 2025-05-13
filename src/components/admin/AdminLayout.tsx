@@ -6,7 +6,7 @@ import Link from 'next/link'; // Assuming this is a Next.js project
 // import { useRouter } from 'next/router'; // For Next.js client-side navigation
 
 interface AdminLayoutProps {
-  children: ReactNode;
+  children: ReactNode;  
 }
 
 // Mock client-side admin check for demo

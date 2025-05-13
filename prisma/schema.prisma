@@ -1,0 +1,38 @@
+// Assume you have a User model for authentication
+// model User {
+//   id        String    @id @default(cuid())
+//   email     String    @unique
+//   name      String?
+//   password  String
+//   isAdmin   Boolean   @default(false) // Add this field
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+//   profile   UserProfile?
+//   // ... other auth related fields (roles, etc.)
+// }
+
+model UserProfile {
+  id             String    @id @default(cuid())
+  userId         String    @unique // Foreign key to User model
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade) // Link back to User
+
+  bio            String?   @db.Text // A short biography
+  avatarUrl      String?   // URL to a profile picture
+  websiteUrl     String?
+  location       String?
+
+  // Fields related to subscription (will be expanded in Billing step)
+  subscriptionStatus String?   @default("free") // e.g., "free", "premium_monthly", "premium_yearly"
+  stripeCustomerId   String?   @unique // Stripe Customer ID
+  subscriptionId     String?   @unique // Stripe Subscription ID
+  planEndsAt         DateTime? // For subscriptions that have a defined end date
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+// Make sure your User model has the corresponding relation:
+// model User {
+//   // ... other fields
+//   profile   UserProfile?
+// }
